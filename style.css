@@ -92,6 +92,8 @@ h1:hover
   cursor: pointer;
   z-index: 2;
 }
+
+
 .name
 {
   margin-top: 15px;
@@ -103,8 +105,8 @@ h1:hover
 {
   background: rgba(0,0,0,0.5);
   font-family: Roboto Mono, sans-serif;
-  position: fixed;
   display: none;
+  position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
@@ -137,6 +139,12 @@ h1:hover
   cursor: pointer;
   top: 15px;
 }
+
+.close-icon:hover
+{
+  transform: rotateX(180deg);
+}
+
 .modal-header
 {
   background: var(--primary-color);
