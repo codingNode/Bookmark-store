@@ -41,17 +41,63 @@ function validate(urlCheck,nameCheck)
     return true;
 }
 
-function build(name,url)
+function deleteBookmark(url)
 {
-    const favIcon= document.getElementById('favicon');
-    const urlLink = document.getElementById('url');
-    const bookItems = document.getElementById('bookmark-item');
-    console.log(name)
-    favIcon.setAttribute('alt','favicon');
-    urlLink.setAttribute('href',`${url}`);
-    urlLink.textContent = name;
-    // favIcon.setAttribute('src', `https://s2.googleusercontent.com/s2/favicons?domain=${url}`); 
+  
+    
+    bookmarkArr.forEach((item,i)=>{
+        
+        if(item.url === url)
+        {
+            console.log(item)
+            bookmarkArr.splice(i,1); 
+        }
+    });
 
+    localStorage.setItem('bookmarks', JSON.stringify(bookmarkArr));
+    loadBookmarks();
+    
+}
+
+
+function build()
+{
+    
+    const bookItems = document.getElementById('container');
+
+    bookItems.textContent = '';
+
+    bookmarkArr.forEach((items)=>{
+        const {name, url} = items ;
+
+
+        const item= document.createElement('div');
+        item.classList.add('item');
+
+        const closeIcon = document.createElement('i');
+        closeIcon.classList.add('fa-solid', 'fa-xmark');
+        closeIcon.setAttribute('title','Delete Bookmark');
+        closeIcon.setAttribute('onclick',  `deleteBookmark('${url}')`);
+
+        const linkInfo =document.createElement('div');
+        linkInfo.classList.add('name');
+
+        const img = document.createElement('img');
+        img.setAttribute('src',`https://s2.googleusercontent.com/s2/favicons?domain=${url}`);
+        img.setAttribute('alt','favicon');
+
+        const link = document.createElement('a');
+        link.setAttribute('href',`${url}`);
+        link.setAttribute('target','_blank')
+        link.textContent = name;
+
+        linkInfo.append(img,link);
+        item.append(closeIcon,linkInfo);
+
+        bookItems.appendChild(item);
+ 
+    })
+   
  
 }
 function loadBookmarks()
@@ -61,12 +107,8 @@ function loadBookmarks()
         bookmarkArr = JSON.parse(localStorage.getItem('bookmarks'));
         
     }
-    bookmarkArr.forEach((items)=>{
-        const {name, url} = items ;
-        build(name,url)
-    })
-        
-        // console.log(bookmarkArr[i].name)            
+    
+    build();          
 
 }
 
@@ -81,7 +123,7 @@ function storeData(e)
     {
         url=`https://${url}`;
     }
-    // console.log(name,url)
+    
     if (!validate(url,name)) {return false}
 
     const el ={
